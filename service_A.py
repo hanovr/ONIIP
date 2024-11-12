@@ -77,7 +77,7 @@ class ServiceA:
     async def process_events(self) -> None:
         """Обрабатывает события из очереди, отправляя их в целевой сервис."""
         while True:
-            if not self.event_queue.empty():
+            if self.semaphore._value and not self.event_queue.empty():
                 asyncio.create_task(self.send_event())
             await asyncio.sleep(0.05)
 
